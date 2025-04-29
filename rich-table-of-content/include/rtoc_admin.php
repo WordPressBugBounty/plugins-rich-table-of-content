@@ -27,7 +27,7 @@ function rtoc_admin_enqueue($hook_suffix)
 		$theme_name  = $my_theme->get('Name');
 		$theme_color = get_theme_mod('theme_color');
 		$text_color = '';
-		if($theme_name == 'JIN:R' || $theme_name == 'JIN:R child'){
+		if ($theme_name == 'JIN:R' || $theme_name == 'JIN:R child') {
 			$theme_color = jinr__theme_color();
 			$text_color = jinr__text_color();
 			if (get_option('rtoc_color') == 'preset1') {
@@ -39,8 +39,8 @@ function rtoc_admin_enqueue($hook_suffix)
 				update_option('rtoc_back_button_color', jinr__theme_color());
 			}
 		} elseif ($theme_name == 'JIN' || $theme_name == 'jin-child') {
-			$theme_color = get_theme_mod( 'theme_color', '#3b4675');
-		} else{
+			$theme_color = get_theme_mod('theme_color', '#3b4675');
+		} else {
 			$theme_color = '#000';
 		}
 
@@ -238,7 +238,7 @@ function rtoc_design_setting_field()
 			)
 		)
 	);
-	
+
 	add_settings_field(
 		'rtoc_list_h3_type',
 		$rtoc_design_h3,
@@ -254,7 +254,7 @@ function rtoc_design_setting_field()
 			)
 		)
 	);
-	
+
 	add_settings_field(
 		'rtoc_frame_design',
 		$rtoc_design_frame,
@@ -353,8 +353,6 @@ function rtoc_senior_setting_field()
 
 	$rtoc_advanced_css = __('Don’t load plugin CSS', 'rich-table-of-content');
 	$rtoc_hide_openclose = __('Hide open/close buttons', 'rich-table-of-content');
-
-	$rtoc_userate_measure_7 = __('Measure table of contents usage for 7 days', 'rich-table-of-content'); // '7日間の目次使用率を測定'
 
 	add_settings_field(
 		'rtoc_back_toc_button',
@@ -465,22 +463,6 @@ function rtoc_senior_setting_field()
 		'rtoc_senior_setting',
 		'rtoc_senior_section'
 	);
-	// RTOC ver1.2〜で, Addonが 無効 or ｲﾝｽﾄｰﾙなし の時.
-	if (!is_plugin_active('rich-table-of-content-addon/rtoc-addon.php')) {
-		add_settings_field(
-			'rtoc_userate_measure_7',
-			$rtoc_userate_measure_7,
-			'rtoc_userate_measure_7_callback',
-			'rtoc_senior_setting',
-			'rtoc_senior_section',
-			array(
-				'options' => array(
-					'on'  => 'ON',
-					'off' => 'OFF',
-				)
-			)
-		);
-	}
 	register_setting('rtoc_config', 'rtoc_back_toc_button');
 	register_setting('rtoc_config', 'rtoc_back_toc_pc');
 	register_setting('rtoc_config', 'rtoc_display_top');
@@ -495,7 +477,6 @@ function rtoc_senior_setting_field()
 	register_setting('rtoc_config', 'rtoc_close_text');
 	register_setting('rtoc_config', 'rtoc_exclude_openclose');
 	register_setting('rtoc_config', 'rtoc_exclude_css');
-	register_setting('rtoc_config', 'rtoc_userate_measure_7');
 }
 add_action('admin_init', 'rtoc_senior_setting_field', 15);
 
@@ -709,21 +690,22 @@ function rtoc_display_callback($args)
 	echo $html;
 }
 // カテゴリーのチェックボックスが一度だけ追加されるようにする
-function rtoc_check_category_added() {
-    $option_name = 'rtoc_display';
-    $category_added = get_option('rtoc_category_added');
-    if ($category_added === false) {
-        $option = get_option($option_name);
-        if ($option == '') {
-            update_option($option_name, array('post' => 'post', 'page' => 'page', 'category' => 'category'));
-        } else {
-            if (!in_array('category', $option, true)) {
-                $option['category'] = 'category';
-                update_option($option_name, $option);
-            }
-        }
-        update_option('rtoc_category_added', 'yes');
-    }
+function rtoc_check_category_added()
+{
+	$option_name = 'rtoc_display';
+	$category_added = get_option('rtoc_category_added');
+	if ($category_added === false) {
+		$option = get_option($option_name);
+		if ($option == '') {
+			update_option($option_name, array('post' => 'post', 'page' => 'page', 'category' => 'category'));
+		} else {
+			if (!in_array('category', $option, true)) {
+				$option['category'] = 'category';
+				update_option($option_name, $option);
+			}
+		}
+		update_option('rtoc_category_added', 'yes');
+	}
 }
 add_action('admin_init', 'rtoc_check_category_added');
 function rtoc_exclude_post_toc_callback()
@@ -901,9 +883,9 @@ function rtoc_color_callback($args)
 		if ($theme_name == 'JIN' || $theme_name == 'jin-child') {
 			$format = '<label for="%1$s_%2$s"><div class="preset_bg visual-%2$s"><img src="' . plugins_url('../img/jin/%2$s.png', __FILE__) . '" alt="RTOCのプリセットカラー"><span>' . $title . '</span></div></label>';
 		} elseif ($theme_name == 'JIN:R' || $theme_name == 'JIN:R child') {
-			
+
 			$format = '<label for="%1$s_%2$s"><div class="preset_bg visual-%2$s"><img src="' . plugins_url('../img/jin/%2$s.png', __FILE__) . '" alt="RTOCのプリセットカラー"><span>' . $title . '</span></div></label>';
-		}  else {
+		} else {
 			$format = '<label for="%1$s_%2$s"><div class="preset_bg visual-%2$s"><img src="' . plugins_url('../img/%2$s.png', __FILE__) . '" alt="RTOCのプリセットカラー"><span>' . $title . '</span></div></label>';
 		}
 		printf($format, $option_name, $val, $title);
@@ -1076,25 +1058,6 @@ function rtoc_color_picker($name, $value, $label, $class)
 	})( jQuery );';
 	wp_add_inline_script('wp-color-picker', $data, 'after');
 }
-function rtoc_userate_measure_7_callback($args)
-{
-	$option_name = 'rtoc_userate_measure_7';
-	$option = get_option($option_name);
-	if ($option == '') {
-		update_option($option_name, 'off');
-		$option = get_option($option_name);
-	}
-
-	foreach ($args['options'] as $val => $title) {
-		printf(
-			'<input type="radio" id="%1$s[%2$s]" class="rtoc_admin_radio" name="%1$s" value="%2$s" %3$s />',
-			$option_name,
-			$val,
-			checked($val, $option, false)
-		);
-		printf('<label for="%1$s[%2$s]"> %3$s</label>', $option_name, $val, $title);
-	}
-}
 
 
 
@@ -1248,10 +1211,6 @@ function rtoc_setting_screen_contents()
 								</div>
 							</div>
 						</div>
-						<!-- <div class="rtoc_admin_wrapper rtoc_addon_contents rtoc_admin_red">
-							<?php do_settings_sections('rtoc_addon_setting'); ?>
-							<?php settings_fields('rtoc_config'); ?>
-						</div> -->
 						<div class="rtoc_admin_wrapper rtoc_admin_yellow">
 							<?php do_settings_sections('rtoc_senior_setting'); ?>
 							<?php settings_fields('rtoc_config'); ?>
