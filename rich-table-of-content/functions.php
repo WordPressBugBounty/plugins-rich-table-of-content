@@ -3,7 +3,7 @@
 Plugin Name: Rich Table of Contents
 Plugin URI: https://croover.co.jp/rtoc
 Description: "RTOC -Rich Table of Contents-" is a table of contents generation plugin from Japan that allows anyone to easily create a table of contents.
-Version: 1.4.1
+Version: 1.4.3
 Author: CROOVER.inc
 Text Domain: rich-table-of-content
 Domain Path: /languages/
@@ -164,7 +164,6 @@ function book_stealth_load_textdomain()
 include_once(dirname(__FILE__) . '/include/rtoc_admin.php');
 include_once(dirname(__FILE__) . '/include/rtoc_inline.php');
 include_once(dirname(__FILE__) . '/include/rtoc_shortcode.php');
-include_once(dirname(__FILE__) . '/include/rtoc_edit.php');
 
 // カラーピッカーのスタイルを読み込む
 add_action('admin_print_styles', 'rtoc_admin_color_picker');
